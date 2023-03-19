@@ -40,20 +40,20 @@ const DATAX = [
 
 const App = () => {
   return (
-    <div class="flex flex-col h-screen items-center bg-gradient-to-br from-sky-900  to-amber-600 text-slate-800 ">
+    <div className="flex flex-col h-screen items-center bg-gradient-to-br from-sky-900  to-amber-600 text-slate-800 ">
       <div className={font.className}>
-        <h1 class="text-6xl text-orange-200 pt-[100px] pb-[30px]">Temida : tree & moveUp</h1>
+        <h1 className="text-6xl text-orange-200 pt-[100px] pb-[30px]">Temida : tree & moveUp</h1>
       </div>
-      <div class="flex">
+      <div className="flex">
         <div>
           <div className={font.className}>
-            <h1 class="text-3xl text-orange-200 text-center">v1</h1>
+            <h1 className="text-3xl text-orange-200 text-center">v1</h1>
           </div>
           <Drzewo DATA={DATA} />
         </div>
         <div>
           <div className={font.className}>
-            <h1 class="text-3xl text-orange-200 text-center">v2</h1>
+            <h1 className="text-3xl text-orange-200 text-center">v2</h1>
           </div>
           <Krzak DATA={DATAX} />
         </div>

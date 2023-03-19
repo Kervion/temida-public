@@ -28,14 +28,14 @@ function Drzewo({ DATA }) {
   const Tree = ({ nodes, parentUid }) => {
     const filteredNodes = nodes.filter((node) => node.parentUid === parentUid);
     return (
-      <ul class="">
+      <ul className="">
         {filteredNodes.map((node, index) => (
-          <li key={node.uid} class="pl-5 py-1 pr-5">
-            <div class={node.parentUid === null ? "flex text-3xl my-3" : "flex"}>
+          <li key={node.uid} className="pl-5 py-1 pr-5">
+            <div className={node.parentUid === null ? "flex text-3xl my-3" : "flex"}>
               <div>&#9679; {node.uid}</div>
-              <div class="mx-3">{node.name}</div>
+              <div className="mx-3">{node.name}</div>
               {index > 0 && (
-                <div class="hover:text-orange-100 cursor-pointer" onClick={() => moveUp(node.uid)}>
+                <div className="hover:text-orange-100 cursor-pointer" onClick={() => moveUp(node.uid)}>
                   &#9650;
                 </div>
               )}
@@ -49,7 +49,7 @@ function Drzewo({ DATA }) {
   };
 
   return (
-    <div class="p-10">
+    <div className="p-10">
       <Tree nodes={newData} parentUid={null} />
     </div>
   );

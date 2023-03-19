@@ -1,30 +1,63 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 
 function Krzak({ DATA }) {
-  const [newData, setNewData] = useState(DATA);
+  const [newData, setNewData] = useState([]);
 
-  const moveUp = (node) => {
-    console.log(node);
+  const moveUp = (uid) => {
+    const index1 = newData.findIndex((item) => item.uid === uid);
+    const index2 = findPrevious(index1);
+    swapElements(index1, index2);
   };
 
-  const Tree = ({ nodes, master }) => {
+  function findPrevious(index) {
+    const parentUid = newData[index].parentUid;
+    for (let i = index - 1; i >= 0; i--) {
+      if (newData[i].parentUid === parentUid) {
+        return i;
+      }
+    }
+  }
+
+  function swapElements(index1, index2) {
+    const newArray = [...newData];
+    [newArray[index1], newArray[index2]] = [newArray[index2], newArray[index1]];
+    setNewData(newArray);
+  }
+
+  function flattenWithParentUid(data, parentUid = null, result = []) {
+    data.forEach((node) => {
+      const { uid, name, children } = node;
+      result.push({ uid, parentUid, name });
+      if (children) {
+        flattenWithParentUid(children, uid, result);
+      }
+    });
+    return result;
+  }
+
+  useEffect(() => {
+    const rezultat = flattenWithParentUid([...DATA]);
+    setNewData(rezultat);
+  }, []);
+
+  const Tree = ({ nodes, parentUid }) => {
+    const filteredNodes = nodes.filter((node) => node.parentUid === parentUid);
     return (
-      <ul class="">
-        {nodes.map((node, index) => (
-          <li key={node.uid} class="pl-5 py-1 pr-5">
-            <div class={master ? "flex text-3xl my-3" : "flex"}>
+      <ul className="">
+        {filteredNodes.map((node, index) => (
+          <li key={node.uid} className="pl-5 py-1 pr-5">
+            <div className={node.parentUid === null ? "flex text-3xl my-3" : "flex"}>
               <div>&#9679; {node.uid}</div>
-              <div class="mx-3">{node.name}</div>
+              <div className="mx-3">{node.name}</div>
               {index > 0 && (
-                <>
-                  <div class="hover:text-orange-100 cursor-pointer" onClick={() => moveUp(node)}>
-                    &#9650;
-                  </div>
-                </>
+                <div className="hover:text-orange-100 cursor-pointer" onClick={() => moveUp(node.uid)}>
+                  &#9650;
+                </div>
               )}
             </div>
-            {node.children?.length > 0 && <Tree nodes={node.children} master={false} />}
+
+            <Tree nodes={nodes} parentUid={node.uid} />
           </li>
         ))}
       </ul>
@@ -32,8 +65,8 @@ function Krzak({ DATA }) {
   };
 
   return (
-    <div class="p-10">
-      <Tree nodes={newData} master={true} />
+    <div className="p-10">
+      <Tree nodes={newData} parentUid={null} />
     </div>
   );
 }
